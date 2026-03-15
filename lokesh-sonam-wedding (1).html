@@ -152,7 +152,7 @@ const PHOTOS = [
 // ADD YOUR SONG HERE:
 // Upload your MP3 to GitHub repo, paste raw URL below
 // e.g. 'https://raw.githubusercontent.com/yourname/repo/main/dheere.mp3'
-const SONG_URL = 'Dheere Dheere Dheere Tere Bina 320 Kbps.mp3';
+const SONG_URL = 'https://raw.githubusercontent.com/mehta183/Sonam-/main/Dheere%20Dheere%20Dheere%20Tere%20Bina%20320%20Kbps.mp3';
 // ══════════════════════════════════════════════
 
 </script>
@@ -169,7 +169,26 @@ const PAGES=['envelope','hero','countdown','letter','cinema','poem','final'];
 let audioEl=null,musicPlaying=false;
 if(SONG_URL){
   audioEl=new Audio(SONG_URL);audioEl.loop=true;audioEl.volume=0.5;
-  const bar=document.getElementById('music-bar');bar.style.display='flex';
+  document.getElementById('music-bar').style.display='flex';
+  const tryPlay=()=>{
+    if(!musicPlaying){
+      audioEl.play().then(()=>{
+        musicPlaying=true;
+        document.getElementById('m-wave').classList.remove('paused');
+        document.getElementById('m-toggle').textContent='⏸';
+      }).catch(()=>{});
+    }
+    document.removeEventListener('click',tryPlay);
+    document.removeEventListener('touchstart',tryPlay);
+  };
+  audioEl.play().then(()=>{
+    musicPlaying=true;
+    document.getElementById('m-wave').classList.remove('paused');
+    document.getElementById('m-toggle').textContent='⏸';
+  }).catch(()=>{
+    document.addEventListener('click',tryPlay);
+    document.addEventListener('touchstart',tryPlay);
+  });
   document.getElementById('m-toggle').onclick=()=>{
     const w=document.getElementById('m-wave'),b=document.getElementById('m-toggle');
     if(musicPlaying){audioEl.pause();w.classList.add('paused');b.textContent='▶';}
